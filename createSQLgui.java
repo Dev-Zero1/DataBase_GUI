@@ -75,7 +75,7 @@ assuming from a csv/data table containing columns/rows.
 		//Initializes each element with an object/value. Fresh state/constructor.
 //--------------------------------------------------------------------------//
 	private void initDBvars(){
-		db 		="k";
+		db 		="";
 		table	="";
 		user	="";
 		pw		="";
@@ -103,38 +103,22 @@ assuming from a csv/data table containing columns/rows.
 
 //---------------------------------------------------------------------------//
 	private void _default(){
-
 	COL =6;
 	ROW =3; //start with 3 rows. 2 for records, 1 for table headers.
-	delBox 			= new HBox ();
+
+	init_Boxes();
+  //field data is a linked list of individual textField linkedlists
 	fieldData 		= new <LinkedList <TextField>> LinkedList();
-
-	//create the field HBox across ---->
-	fieldBoxes		= new HBox(5);
-
-	container 		= new VBox(5);
-	layout 			= new AnchorPane();
-
-	//create the linked list of HBoxes for records, with the first one...
-	recordBoxes = new <HBox> LinkedList(Arrays.asList(new HBox(5),new HBox(5),new HBox(5)));
 
 	//create the 6 starting fieldList text boxes (empty).
 	fieldList  	= new <TextField> 	LinkedList(Arrays.asList(new TextField("Labels"),new TextField(""),new TextField(""),new TextField(""),new TextField(""),new TextField("") ));
-	del 		= new <Button> 		LinkedList(Arrays.asList(new Button("X")  ,new Button("X")  ,new Button("X")  ,new Button("X")  ,new Button("X")  ,new Button("X")   ));
-
-	//create an empty linked list of linkedlists for TextFields on fieldData going down columns parallel w/ fieldList.
+	del 		    = new <Button> 		  LinkedList(Arrays.asList(new Button("X")  ,new Button("X")  ,new Button("X")  ,new Button("X")  ,new Button("X")  ,new Button("X")   ));
 
 	init_Fdata();
+  setLayout();
 
-	//add the first six rows of linked list data for the field (one textfield for each columnn's field).
-	for(int y=0; y<COL; y++){
-		delBox.getChildren().add(del.get(y));
-		fieldBoxes.getChildren().add(fieldList.get(y));
-	}
 
-	container.getChildren().addAll(delBox, fieldBoxes,recordBoxes.get(0),recordBoxes.get(1),recordBoxes.get(2));
-	layout.getChildren().add(container);
-	//set a titles
+	//set a title
 	//ability to delete by row or column and shift up
 	}
 //---------------------------------------------------------------------------//
@@ -152,7 +136,30 @@ assuming from a csv/data table containing columns/rows.
 		}
 		}
 	}
+//---------------------------------------------------------------------------//
 
+//---------------------------------------------------------------------------//
+  public void init_Boxes(){
+    delBox 			  = new HBox ();
+    fieldBoxes		= new HBox(5);
+  	container 		= new VBox(5);
+  	layout 			  = new AnchorPane();
+
+  	recordBoxes   = new <HBox> LinkedList(Arrays.asList(new HBox(5),new HBox(5),new HBox(5)));
+  }
+//---------------------------------------------------------------------------//
+
+//---------------------------------------------------------------------------//
+public void setLayout(){
+  //add the first six rows of linked list data for the field (one textfield for each columnn's field).
+  for(int y=0; y<COL; y++){
+    delBox.getChildren().add(del.get(y));
+    fieldBoxes.getChildren().add(fieldList.get(y));
+  }
+
+  container.getChildren().addAll(delBox, fieldBoxes,recordBoxes.get(0),recordBoxes.get(1),recordBoxes.get(2));
+	layout.getChildren().add(container);
+}
 
 //---------------------------------------------------------------------------//
 
@@ -160,6 +167,7 @@ assuming from a csv/data table containing columns/rows.
 	public void addCol(){
 
 		fieldData.add(new LinkedList <TextField>(Arrays.asList(new TextField(""))));
+    //if < the # of columns
 		//..then fill it downwards!
 		COL++;
 	}
@@ -167,14 +175,16 @@ assuming from a csv/data table containing columns/rows.
 
 //---------------------------------------------------------------------------//
 	public void addRow(){
-
+    //add a recordBox to hold the new rows.
 		recordBoxes.add(new HBox(5));
 
+   //when adding a new row, add   onto each column's next textfield down (keeping associated data types together)
 		for(int x=0; x<COL; x++){
-			fieldData.get(x).add(new TextField("x"));
+			fieldData.get(x).add(new TextField(""));
 			//get each HBox row, add the associated fieldData column, very last fieldData boxes.
 		}
 
+   //to the recordbox, find the HBox row, add fieldData for each column from the most recent textField added.
 		for(int n=0; n<ROW; n++){
 		for(int y=0; y<COL; y++){
 			recordBoxes.get(n).getChildren().add(fieldData.get(y).getLast());
