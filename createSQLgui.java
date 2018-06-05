@@ -95,20 +95,12 @@ assuming from a csv/data table containing columns/rows.
 		//function: _default() - no args, no return.
 		//Initializes each element with an object/value. Fresh state/constructor.
 //--------------------------------------------------------------------------//
-
-
-
-
- //---------------------------------------------------------------------------//
-
-//---------------------------------------------------------------------------//
 	private void _default(){
 	COL =6;
 	ROW =3; //start with 3 rows. 2 for records, 1 for table headers.
 
 	init_Boxes();
-  //field data is a linked list of individual textField linkedlists
-	fieldData 		= new <LinkedList <TextField>> LinkedList();
+
 
 	//create the 6 starting fieldList text boxes (empty).
 	fieldList  	= new <TextField> 	LinkedList(Arrays.asList(new TextField("Labels"),new TextField(""),new TextField(""),new TextField(""),new TextField(""),new TextField("") ));
@@ -116,15 +108,13 @@ assuming from a csv/data table containing columns/rows.
 
 	init_Fdata();
   setLayout();
-
-
-	//set a title
-	//ability to delete by row or column and shift up
 	}
 //---------------------------------------------------------------------------//
 
 //---------------------------------------------------------------------------//
 	public void init_Fdata(){
+    //field data is a linked list of individual textField linkedlists
+  	fieldData 		= new <LinkedList <TextField>> LinkedList();
 
 		for(int c=0; c < COL; c++){
 			fieldData.add(new <TextField> LinkedList());
