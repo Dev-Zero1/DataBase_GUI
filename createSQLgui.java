@@ -108,6 +108,10 @@ assuming from a csv/data table containing columns/rows.
 
 	init_Fdata();
   setLayout();
+
+  addRow();
+  addRow();
+  addCol();
 	}
 //---------------------------------------------------------------------------//
 
@@ -155,10 +159,16 @@ public void setLayout(){
 
 //---------------------------------------------------------------------------//
 	public void addCol(){
+    //addLabel();
+		fieldData.add(new <TextField> LinkedList());
 
-		fieldData.add(new LinkedList <TextField>(Arrays.asList(new TextField(""))));
+    for(int x=0; x< ROW; x++){
+    fieldData.getLast().add(new TextField(""));
+    recordBoxes.get(x).getChildren().add(fieldData.getLast().get(x));
+
+  }
     //if < the # of columns
-		//..then fill it downwards!
+		//..then fill it downwards @ recordboxes.getLast().getChildren().add(textField.getCol()@);
 		COL++;
 	}
 //---------------------------------------------------------------------------//
@@ -171,15 +181,10 @@ public void setLayout(){
    //when adding a new row, add   onto each column's next textfield down (keeping associated data types together)
 		for(int x=0; x<COL; x++){
 			fieldData.get(x).add(new TextField(""));
+      recordBoxes.getLast().getChildren().add(fieldData.get(x).getLast());
 			//get each HBox row, add the associated fieldData column, very last fieldData boxes.
 		}
-
-   //to the recordbox, find the HBox row, add fieldData for each column from the most recent textField added.
-		for(int n=0; n<ROW; n++){
-		for(int y=0; y<COL; y++){
-			recordBoxes.get(n).getChildren().add(fieldData.get(y).getLast());
-		}
-		}
+    container.getChildren().add(recordBoxes.getLast());
 		ROW++;
 	}
 //---------------------------------------------------------------------------//
