@@ -32,6 +32,7 @@ import java.lang.IllegalArgumentException;
 		upload csv to become a table... rename? connect to db? create new db?
 
  */
+
 public class createSQLgui{
 /*
 assuming from a csv/data table containing columns/rows.
@@ -42,16 +43,15 @@ assuming from a csv/data table containing columns/rows.
 	private 	int		COL; 	//determined by number of columns across
 	private 	int 	ROW; 	//determined by number of rows down
 
-
 	//Button 	clear;
 	//Button 	submit;
-    LinkedList <Button> del;
+  LinkedList <Button> del;
 
-	LinkedList <HBox>  	recordBoxes; 	//rows of records - up to 300
-	HBox  			   	fieldBoxes;		// columns of metadata, up to 40
-	public VBox			container;		//the Vertical Box to house all headers/data.
-	public AnchorPane 	layout;			//final layout pane for the stage.
-	public HBox 		delBox;
+	LinkedList <HBox>  	  recordBoxes; 	// rows of records - up to 300
+	HBox  			   	      fieldBoxes;		// columns of metadata, up to 40
+	protected VBox			  container;		// the Vertical Box to house all headers/data.
+	protected AnchorPane 	layout;			  // final layout pane for the stage.
+	protected HBox 		    delBox;
 
 
 	//data to potentially work with a database connection
@@ -63,8 +63,7 @@ assuming from a csv/data table containing columns/rows.
 		//function: createSQLgui() - default constructor for new calcGUI() objects.
 //--------------------------------------------------------------------------//
 	//default constructor no parameters.
-	protected createSQLgui()
-	{
+	protected createSQLgui(){
 		_default(); //initialize all elements to not-null states.
 		initDBvars();
 
@@ -79,18 +78,19 @@ assuming from a csv/data table containing columns/rows.
 		table	="";
 		user	="";
 		pw		="";
-
 	}
-    private void setListeners(){
-		//clear.setOnAction (e ->{ Answer.setText("");  });
 
+  private void setListeners(){
+		//clear.setOnAction (e ->{ Answer.setText("");  });
 	}
 	private void resetVals(){
 
 	}
+
 	private void setTextListeners(final int x){
 		//num[x].setOnAction(e -> {  });
 	}
+
 //--------------------------------------------------------------------------//
 		//function: _default() - no args, no return.
 		//Initializes each element with an object/value. Fresh state/constructor.
@@ -109,14 +109,18 @@ assuming from a csv/data table containing columns/rows.
 	init_Fdata();
   setLayout();
 
-  addRow();
-  addRow();
+
   addCol();
+  addCol();
+
+  addRow();
+  addRow();
+  addRow();
 	}
 //---------------------------------------------------------------------------//
 
 //---------------------------------------------------------------------------//
-	public void init_Fdata(){
+	protected void init_Fdata(){
     //field data is a linked list of individual textField linkedlists
   	fieldData 		= new <LinkedList <TextField>> LinkedList();
 
@@ -133,7 +137,7 @@ assuming from a csv/data table containing columns/rows.
 //---------------------------------------------------------------------------//
 
 //---------------------------------------------------------------------------//
-  public void init_Boxes(){
+  protected void init_Boxes(){
     delBox 			  = new HBox ();
     fieldBoxes		= new HBox(5);
   	container 		= new VBox(5);
@@ -144,7 +148,7 @@ assuming from a csv/data table containing columns/rows.
 //---------------------------------------------------------------------------//
 
 //---------------------------------------------------------------------------//
-public void setLayout(){
+protected void setLayout(){
   //add the first six rows of linked list data for the field (one textfield for each columnn's field).
   for(int y=0; y<COL; y++){
     delBox.getChildren().add(del.get(y));
@@ -158,21 +162,26 @@ public void setLayout(){
 //---------------------------------------------------------------------------//
 
 //---------------------------------------------------------------------------//
-	public void addCol(){
-    //addLabel();
+	protected void addCol(){
+    addLabelCol();
 		fieldData.add(new <TextField> LinkedList());
+    COL++;
 
     for(int x=0; x< ROW; x++){
     fieldData.getLast().add(new TextField(""));
-    recordBoxes.get(x).getChildren().add(fieldData.getLast().get(x));
-
+   recordBoxes.get(x).getChildren().add(fieldData.getLast().get(x));
   }
     //if < the # of columns
 		//..then fill it downwards @ recordboxes.getLast().getChildren().add(textField.getCol()@);
-		COL++;
-	}
-//---------------------------------------------------------------------------//
 
+	}
+  protected void addLabelCol(){
+      fieldList.add(new TextField(""));
+      fieldBoxes.getChildren().add(fieldList.getLast());
+  }
+//---------------------------------------------------------------------------//
+// fieldList ----> fieldBoxes
+// fieldData ----> recordboxes
 //---------------------------------------------------------------------------//
 	public void addRow(){
     //add a recordBox to hold the new rows.
